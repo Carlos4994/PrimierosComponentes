@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:miscomponentes/src/pages/alert_page.dart';
 import 'package:miscomponentes/src/providers/menu_provider.dart';
+import 'package:miscomponentes/src/utils/icon_string_util.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -21,14 +23,14 @@ class HomePage extends StatelessWidget {
       //initialData: const [],
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         return ListView(
-          children: _listaItems(snapshot.data),
+          children: _listaItems(snapshot.data, context),
         );
       },
     );
     // return ListView(children: _listaItems());
   }
 
-  List<Widget> _listaItems(List<dynamic>? data) {
+  List<Widget> _listaItems(List<dynamic>? data, BuildContext context) {
     final List<Widget> opciones = [];
     // Check if data is not null
     if (data != null) {
@@ -36,15 +38,18 @@ class HomePage extends StatelessWidget {
       data.forEach((opt) {
         final widgetTemp = ListTile(
           title: Text(opt['texto']),
-          leading: const Icon(
-            Icons.account_circle,
-            color: Colors.blue,
-          ),
+          leading: getIcon(opt['icon']),
           trailing: const Icon(
             Icons.keyboard_arrow_right,
             color: Colors.blue,
           ),
-          onTap: () {},
+          onTap: () {
+            final route = MaterialPageRoute(builder: (context) {
+              return const AlertPage();
+            });
+
+            Navigator.push(context, route);
+          },
         );
         opciones
           ..add(widgetTemp)
